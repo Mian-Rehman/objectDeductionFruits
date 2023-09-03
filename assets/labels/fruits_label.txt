@@ -1,0 +1,7 @@
+fresh apple
+fresh bnana
+fresh orange
+rotten apple
+rotten bnana
+rotten orange
+rotten-vs-fresh-fruit
