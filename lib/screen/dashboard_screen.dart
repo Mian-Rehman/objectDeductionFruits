@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:object_detection/HomeScreen.dart';
 import 'package:object_detection/login_screen.dart';
 import 'package:object_detection/screen/fruit_list_screen.dart';
+import 'package:object_detection/screen/my_fruit_list.dart';
 import 'package:object_detection/screen/upload_fruits_screen.dart';
 
 import '../constants.dart';
@@ -104,12 +105,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           SizedBox(
                             width: 50,
                             height: 50,
-                            child: Image.asset("assets/store.png"),
+                            child: Image.asset("assets/fruit_image.png"),
                           ),
 
                           Container(
                             margin: EdgeInsets.only(top: 5),
-                            child: Text("Fruist Shop",style: TextStyle(
+                            child: Text("Fruits Shop",style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white
                             )
@@ -132,6 +133,39 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                 flex: 2,
                 child: InkWell(
                   onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> MyFruitListScreen()));
+                  },
+                  child: Card(
+                    elevation: 10,
+                    child: Container(
+                      height: 100,
+                      padding: EdgeInsets.all(10),
+                      color: kBackgoundColor,
+                      child: Column(
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            child: Image.asset("assets/analyze_food.webp"),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 5),
+                            child: Text("My Fruits",style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white
+                            ),),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+            ),
+
+            Expanded(
+                flex: 2,
+                child: InkWell(
+                  onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
                   },
                   child: Card(
@@ -150,8 +184,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                           Container(
                             margin: EdgeInsets.only(top: 5),
                             child: Text("Analyze Fruits",style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white
+                                fontSize: 16,
+                                color: Colors.white
                             ),),
                           )
                         ],

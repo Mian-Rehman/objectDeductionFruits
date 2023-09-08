@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:object_detection/screen/dashboard_screen.dart';
@@ -38,6 +39,7 @@ class _UploadFruitsScreenState extends State<UploadFruitsScreen> {
   ImagePicker picker = ImagePicker();
   String? imageUrl;
   var urlDownload;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -287,6 +289,8 @@ class _UploadFruitsScreenState extends State<UploadFruitsScreen> {
       "contactNumber":contactNumberController.text.toString(),
       "cityName":selectedCity.toString().toLowerCase(),
       "fruitID":id.toString(),
+      "fruitStatus":"active",
+      "userUID":auth.currentUser?.uid.toString(),
 
     }).whenComplete(() {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

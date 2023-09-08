@@ -1,24 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:object_detection/screen/details_screen.dart';
 
 import '../constants.dart';
 
-class FruitListScreen extends StatefulWidget {
-  const FruitListScreen({Key? key}) : super(key: key);
+class MyFruitListScreen extends StatefulWidget {
+  const MyFruitListScreen({Key? key}) : super(key: key);
 
   @override
-  State<FruitListScreen> createState() => _FruitListScreenState();
+  State<MyFruitListScreen> createState() => _FruitListScreenState();
 }
 
-class _FruitListScreenState extends State<FruitListScreen> {
+class _FruitListScreenState extends State<MyFruitListScreen> {
 
   var fsdConColor = kBackgoundColor;
   var lhrConColor = Colors.white;
   var khrConColor = Colors.white;
   var selectedCity = "Faisalabad";
 
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class _FruitListScreenState extends State<FruitListScreen> {
        backgroundColor: kBackgoundColor,
        title: Container(
            margin: const EdgeInsets.only(right: 30),
-           child: const Center(child: Text("Fruits Shop"))),
+           child: const Center(child: Text("My Fruits"))),
      ),
      body:  Column(
        children: [
@@ -112,7 +114,8 @@ class _FruitListScreenState extends State<FruitListScreen> {
                  stream: FirebaseFirestore.instance
                      .collection('fruits')
                       .where("cityName",isEqualTo: selectedCity.toLowerCase())
-                      .where("fruitStatus",isEqualTo: "active")
+                      .where("fruitStatus",isEqualTo:"active")
+                      .where("userUID",isEqualTo: auth.currentUser!.uid.toString())
                      .snapshots(),
                  builder: (context, snapshots) {
                    return (snapshots.connectionState ==
@@ -200,16 +203,32 @@ class _FruitListScreenState extends State<FruitListScreen> {
                                        ),
 
                                        SizedBox(height: 10,),
-                                       ElevatedButton(onPressed: (){
-                                         Navigator.push(context,
-                                             MaterialPageRoute(builder: (context)=>FruistDetailsScreen(
-                                               "${data['fruitImage']}",
-                                               "${data['fruitName']}",
-                                               "${data['fruitPrice']}",
-                                               "${data['contactNumber']}",
-                                               "${data['cityName']}",
-                                             )));
-                                       }, child: Text("Open Details"))
+                                       Row(
+                                         children: [
+                                           ElevatedButton(onPressed: (){
+                                             Navigator.push(context,
+                                                 MaterialPageRoute(builder: (context)=>FruistDetailsScreen(
+                                                   "${data['fruitImage']}",
+                                                   "${data['fruitName']}",
+                                                   "${data['fruitPrice']}",
+                                                   "${data['contactNumber']}",
+                                                   "${data['cityName']}",
+                                                 )
+                                                 )
+                                             );
+
+
+                                           }, child: Text("Open Details")
+                                           ),
+
+                                           SizedBox(width: 5,),
+
+                                           ElevatedButton(onPressed: (){
+                                             deleteFruits(data['fruitID']);
+                                           }, child: Text("Delete")
+                                           ),
+                                         ],
+                                       )
                                      ],
                                    ),
                                  ),
@@ -228,5 +247,19 @@ class _FruitListScreenState extends State<FruitListScreen> {
      ),
 
    );
+  }
+
+  void deleteFruits(data) {
+
+    FirebaseFirestore.instance.collection("fruits")
+        .doc(data)
+        .update({
+        "fruitStatus":"delete"
+    }).whenComplete(() {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Food Delete completed"),
+      ));
+    });
+
   }
 }
