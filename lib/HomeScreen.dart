@@ -129,61 +129,79 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (){
           print("$score");
         },
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              //Image with Detections....
+        child: Column(
+          children: [
 
-              !firststate
-                  ? !message ? LoaderState() : Text("Select Image")
-                  : Expanded(
-                      child: Container(
-                          child:
-                              _objectModel.renderBoxesOnImage(_image!, objDetect,)),
-                    ),
+            Container(
+              margin: EdgeInsets.all(10),
+              child: Text("Result: ${className.toString()} \n Score: ${score.toString()}",style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black
+              ),),
+            ),
 
-              // !firststate
-              //     ? LoaderState()
-              //     : Expanded(
-              //         child: Container(
-              //             height: 150,
-              //             width: 300,
-              //             child: objDetect.isEmpty
-              //                 ? Text("hello")
-              //                 : _objectModel.renderBoxesOnImage(
-              //                     _image!, objDetect)),
-              //       ),
-              Center(
-                child: Visibility(
-                  visible: _imagePrediction != null,
-                  child: InkWell(
-                    onTap: (){
-                      print("click");
-                    },
-                    child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: InkWell(
-                            onTap: (){
-                              print("Click");
-                            },
-                            child: Text("$_imagePrediction"))
+            Container(
+              width: MediaQuery.sizeOf(context).width,
+              height: 600,
+              padding: EdgeInsets.all(10),
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //Image with Detections....
+
+
+
+                  !firststate
+                      ? !message ? LoaderState() : Text("Select Image")
+                      : Expanded(
+                          child: Container(
+                              child:
+                                  _objectModel.renderBoxesOnImage(_image!, objDetect,)),
+                        ),
+
+                  // !firststate
+                  //     ? LoaderState()
+                  //     : Expanded(
+                  //         child: Container(
+                  //             height: 150,
+                  //             width: 300,
+                  //             child: objDetect.isEmpty
+                  //                 ? Text("hello")
+                  //                 : _objectModel.renderBoxesOnImage(
+                  //                     _image!, objDetect)),
+                  //       ),
+                  Center(
+                    child: Visibility(
+                      visible: _imagePrediction != null,
+                      child: InkWell(
+                        onTap: (){
+                          print("click");
+                        },
+                        child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: InkWell(
+                                onTap: (){
+                                  print("Click");
+                                },
+                                child: Text("$_imagePrediction"))
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              //Button to click pic
-              // ElevatedButton(
-              //   onPressed: () {
-              //     // runObjectDetection();
-              //   },
-              //   child: const Icon(Icons.camera),
-              // )
-            ],
-          )),
+                  //Button to click pic
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     // runObjectDetection();
+                  //   },
+                  //   child: const Icon(Icons.camera),
+                  // )
+                ],
+              )),
+            ),
+          ],
         ),
       ),
     );
